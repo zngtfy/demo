@@ -1,0 +1,61 @@
+*********************************************************************
+*                         Setup WordPress 1                         *
+*********************************************************************
+
+1. Stop & remove container
+docker stop wordpress3001 && docker rm wordpress3001
+sudo rm -R ~/Php/wordpress3001
+
+2. Create MariaDB container & add DB
+docker run --name mariadb -e MYSQL_ROOT_PASSWORD=P@SSnhucu6969 -p 3306:3306 -v mariadb_data:/var/lib/mariadb -v mariadb_mysql:/var/lib/mysql -d mariadb:10.3.23
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadb
+
+Database name:	wordpress3001
+Character set:	utf8mb4
+Collation:		utf8mb4_general_ci
+
+3. Get wordpress & create container
+git clone --single-branch -b wordpress-dev https://github.com/zngtfy/Demo.git ~/Php/wordpress3001
+docker run --name wordpress3001 -p 3001:80 -v ~/Php/wordpress3001:/var/www/html -d php:7.2.31-apache
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' wordpress3001
+
+4. Install MySQLi
+docker exec -it wordpress3001 /bin/bash
+docker-php-ext-install mysqli
+exit
+
+5. Restart container
+docker restart wordpress3001
+
+6. Setup WordPress
+- Access: http://192.168.0.97:3001
+- Input DB's information
+- Copy all config info file wp-config-sample.php
+- Rename it to wp-config.php then upload to server
+- Update site information
+
+*********************************************************************
+*                         Setup WordPress 2                         *
+*********************************************************************
+
+1. Stop & remove container
+docker stop wordpress3002 && docker rm wordpress3002
+sudo rm -R ~/Php/wordpress3002
+
+2. Create MariaDB container & add DB
+docker run --name mariadb -e MYSQL_ROOT_PASSWORD=P@SSnhucu6969 -p 3306:3306 -v mariadb_data:/var/lib/mariadb -v mariadb_mysql:/var/lib/mysql -d mariadb:10.3.23
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadb
+
+Database name:	wordpress3002
+Character set:	utf8mb4
+Collation:		utf8mb4_general_ci
+
+3. Create container
+docker run --name wordpress3001 -p 3002:80 -v ~/Php/wordpress3001:/var/www/html -d wordpress
+
+4. Setup WordPress
+- Access: http://192.168.0.97:3002
+- Input DB's information
+- Copy all config info file wp-config-sample.php
+- Rename it to wp-config.php then upload to server
+- Update site information
