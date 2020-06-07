@@ -51,7 +51,7 @@ Character set:	utf8mb4
 Collation:		utf8mb4_general_ci
 
 3. Create container
-docker run --name wordpress3001 -p 3002:80 -v ~/Php/wordpress3001:/var/www/html -d wordpress
+docker run --name wordpress3002 -p 3002:80 -v ~/Php/wordpress3002:/var/www/html -d wordpress
 
 4. Setup WordPress
 - Access: http://192.168.0.97:3002
